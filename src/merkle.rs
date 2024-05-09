@@ -3,6 +3,7 @@ use alloy_merkle_tree::standard_binary_tree::StandardMerkleTree;
 use alloy_primitives::FixedBytes;
 use serde::Serialize;
 
+use crate::helpers::trim_dyn_sol_string;
 #[derive(Serialize)]
 pub struct UserProofs {
     address: String,
@@ -23,7 +24,8 @@ pub fn generate_merkle_data(whitelist: Vec<DynSolValue>) -> MerkleData {
     let proofs: Vec<UserProofs> = whitelist
         .into_iter()
         .map(|x| {
-            let address: String = x.as_str().map(String::from).expect("Invalid leaf");
+            let dyn_sol_str: &str = x.as_str().unwrap();
+            let address: String = trim_dyn_sol_string(dyn_sol_str).to_string();
             let proof: Vec<FixedBytes<32>> = tree.get_proof(&x);
             UserProofs {
                 address,

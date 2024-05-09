@@ -22,3 +22,9 @@ pub fn read_whitelist() -> Vec<DynSolValue> {
         .map(|x: String| DynSolValue::from(x))
         .collect();
 }
+
+// Convesion from DynSolValue to string creates weird formatting. In order to avoid this we should clean up the string
+// before storing in our output file
+pub fn trim_dyn_sol_string(x: &str) -> &str {
+    &x[3..45]
+}
