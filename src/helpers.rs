@@ -23,8 +23,9 @@ pub fn read_whitelist() -> Vec<DynSolValue> {
         .collect();
 }
 
-// Convesion from DynSolValue to string creates weird formatting. In order to avoid this we should clean up the string
+// Convesion from DynSolValue to string adds a "\" at the beginning and end of the sting.
+// In order to avoid this we should clean up the string
 // before storing in our output file
-pub fn trim_dyn_sol_string(x: &str) -> &str {
-    &x[3..45]
+pub fn trim_string(x: &str) -> &str {
+    &x[1..x.len()-1]
 }
