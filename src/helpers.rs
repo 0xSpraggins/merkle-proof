@@ -1,6 +1,5 @@
 use crate::merkle::MerkleData;
 use alloy_dyn_abi::DynSolValue;
-use serde_json;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
 
@@ -16,16 +15,16 @@ pub fn read_whitelist() -> Vec<DynSolValue> {
     let file: File = File::open("whitelist.txt").expect("Whitelist not found");
     let reader: BufReader<File> = BufReader::new(file);
 
-    return reader
+    reader
         .lines()
-        .filter_map(Result::ok)
+        .map_while(Result::ok)
         .map(|x: String| DynSolValue::from(x))
-        .collect();
+        .collect()
 }
 
 // Convesion from DynSolValue to string adds a "\" at the beginning and end of the sting.
 // In order to avoid this we should clean up the string
 // before storing in our output file
 pub fn trim_string(x: &str) -> &str {
-    &x[1..x.len()-1]
+    &x[1..x.len() - 1]
 }
